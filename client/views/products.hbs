@@ -1,0 +1,176 @@
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Practice8</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+    integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn"
+    crossorigin="anonymous">
+    <style>
+        .phbook {
+            color: white;
+            border-radius: 30px;
+            padding-top: 3px;
+            padding-bottom: 3px;
+            padding-left: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+    <div class="py-5 text-left">
+    <h2>Список Продуктов</h2>
+    </div>
+    <table class="table" id="products_table">
+    <thead>
+    <tr>
+    <th>ID</th>
+    <th>Название продукта</th>
+    <th>Бренд</th>
+    <th>Количество</th>
+    <th>Куплено</th>
+    <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each results}}
+    <tr>
+    <td>{{ id }}</td>
+    <td>{{ name }}</td>
+    <td>{{ brand }}</td>
+    <td>{{ qty }}</td>
+    <td>{{ isBought }}</td>
+    <td>
+    <a href="javascript:void(0);" class="btn btn-sm btn-secondary phbook edit
+    productbook" data-id="{{ id }}"
+    data-name="{{ name }}" data-brand="{{ brand }}" data-qty="{{ qty }}"
+    data-isBought="{{ isBought }}">Изменить</a>
+    <a href="javascript:void(0);" class="btn btn-sm phbook btn-danger remove" data-id="{{ id }}">Удалить</a>
+    </td>
+    </tr>
+    {{else}}
+    <tr>
+    <td colspan="5" class="text-center">Нет данных для отображения на форме</td>
+    </tr>
+    {{/each}}
+    </tbody>
+    </table>
+    <button class="btn btn-success float-right" data-toggle="modal" data-target="#newProductModal">Добавить новый товар </button>
+    </div>
+    <!-- Новое окно добавления заказа -->
+    <form action="/save" method="post">
+    <div class="modal fade" id="newProductModal" role="dialog">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    <div class="modal-header">
+    <h4 class="modal-title">Добавить новый товар</h4>
+    <button type="button" class="close" data-dismiss="modal">
+    <span>&times;</span>
+    </button>
+    </div>
+    <div class="modal-body">
+    <div class="form-group">
+    <input type="text" name="name" class="form-control" placeholder="Название товара"
+    required="required">
+    </div>
+    <div class="form-group">
+    <input type="text" name="brand" class="form-control" placeholder="Бренд товара"
+    required="required">
+    </div>
+    <div class="form-group">
+    <input type="text" name="qty" class="form-control" placeholder="Количество"
+    required="required">
+    </div>
+    <div class="form-group">
+    <input type="text" name="isBought" class="form-control" placeholder="Куплено" required="required">
+    </div>
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+    <button type="submit" class="btn btn-success phbook">Создать</button>
+    </div>
+    </div>
+    </div>
+    </div>
+    </form>
+    <!-- Окно редактирования данных товара-->
+    <form action="/update" method="post">
+    <div class="modal fade" id="editProductModal" role="dialog">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    <div class="modal-header">
+    <h4 class="modal-title">Изменить товар</h4>
+    <button type="button" class="close" data-dismiss="modal">
+    <span>&times;</span>
+    </button>
+    </div>
+     <div class="modal-body">
+    <div class="form-group">
+    <input type="text" name="name" class="form-control" placeholder="Название товара"
+    required="required">
+    </div>
+    <div class="form-group">
+    <input type="text" name="brand" class="form-control" placeholder="Бренд товара"
+    required="required">
+    </div>
+    <div class="form-group">
+    <input type="text" name="qty" class="form-control" placeholder="Количество"
+    required="required">
+    </div>
+    <div class="form-group">
+    <input type="text" name="isBought" class="form-control" placeholder="Куплено" required="required">
+    </div>
+    </div>
+    <div class="modal-footer">
+    <input type="hidden" name="id" class="product_id">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+    <button type="submit" class="btn btn-success phbook">Обновить</button>
+    </div>
+    </div>
+    </div>
+    </div>
+    </form>
+    <!-- Окно удаления товара из списка-->
+    <form id="add-row-form" action="/remove" method="post">
+    <div class="modal fade" id="removeProductModal" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+    <div class="modal-content">
+    <div class="modal-header">
+    <h4 class="modal-title"></h4>Удалить товар</h4>
+    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+    </div>
+    <div class="modal-body">
+    Вы действительно хотите удалить данный товар?
+    </div>
+    <div class="modal-footer">
+    <input type="hidden" name="id" class="form-control product_id_removal"
+    required="required">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+    <button type="submit" class="btn btn-danger phbook">Удалить</button>
+    </div>
+    </div>
+    </div>
+    </div>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+    <script>
+    $(document).ready(function () {
+    $('#products_table').on('click', '.edit', function () {
+    $('#editProductModal').modal('show');
+    $('.product_id').val($(this).data('id'));
+    $('.name').val($(this).data('name'));
+    $('.brand').val($(this).data('brand'));
+    $('.qty').val($(this).data('qty'));
+    $('.isBought').val($(this).data('isBought'));
+    }).on('click', '.remove', function () {
+    $('#removeProductModal').modal('show');
+    $('.product_id_removal').val($(this).data('id'));
+    });
+    });
+    </script>
+</body>
+</html>

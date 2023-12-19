@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package myapp;
+
+service UserService {
+  rpc CreateUser(UserRequest) returns (UserResponse);
+  rpc ReadUser(UserRequest) returns (UserResponse);
+  rpc UpdateUser(UserRequest) returns (UserResponse);
+  rpc DeleteUser(UserRequest) returns (UserResponse);
+}
+
+message UserRequest {
+  string username = 1;
+  string password = 2;
+  string full_name = 3;
+}
+
+message UserResponse {
+  string message = 1;
+}
